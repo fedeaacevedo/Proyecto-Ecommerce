@@ -39,7 +39,27 @@ function leerDatosCurso(curso){
         id: curso.querySelector('a').getAttribute('data-id'),
         cantidad:1
     }
-    articulosCarrito = [...articulosCarrito, infoCurso];
+
+    //Revisar si existe el elemento
+    const existe = articulosCarrito.some(curso => curso.id === infoCurso.id);
+        if(existe){
+            //Actualizamos la cantidad
+            const cursos = articulosCarrito.map( curso => {
+                if(curso.id === infoCurso.id){
+                    curso.cantidad ++;
+                    return curso; //Retorna los objetos que se actualizaro 
+                }else {
+                    return curso; //Retorna los objetos que no se modificaron
+                }
+            });
+            articulosCarrito = [...cursos];
+        }else{
+            //Agregamos el curso
+
+            articulosCarrito = [...articulosCarrito, infoCurso];
+        }
+
+
 
     console.log(articulosCarrito);
 
@@ -54,19 +74,20 @@ function carritoHTML(){
 
 
     articulosCarrito.forEach( curso => {
+        const { imagen, titulo, precio, cantidad } = curso;
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>
-                <img src="${curso.imagen}" width="100">
+                <img src="${imagen}" width="100">
             </td>
             <td>
-                ${curso.titulo}
+                ${titulo}
             </td>
             <td>
-            ${curso.precio}
+            ${precio}
             </td>
             <td>
-            ${curso.cantidad}
+            ${cantidad}
             </td>
             <td>
                 <a href="#" class="borrar-curso" data-id="${curso.id}">X</a>
